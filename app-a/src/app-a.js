@@ -2,9 +2,9 @@ console.log("app-a-wrapper module");
 
 if (!customElements.get("fmp-app-a-wrapper")) {
   class AppsWrapper extends HTMLElement {
-    constructor() {
+    constructor(store) {
       super();
-      console.log("app-a-wrapper constructor");
+      console.log("app-a-wrapper constructor", store, this);
 
       const host = "http://localhost:5001";
 
@@ -37,6 +37,7 @@ if (!customElements.get("fmp-app-a-wrapper")) {
       }
 
       var app = document.createElement("fmp-app-a");
+      app.store = store;
 
       wrapper.appendChild(app);
       shadow.appendChild(wrapper);
