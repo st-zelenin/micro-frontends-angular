@@ -14,10 +14,10 @@ if (!customElements.get('fmp-apps-wrapper')) {
       var shadow = this.attachShadow({mode: 'open'});
       var wrapper = document.createElement('div');
       
-      var appA = document.createElement('fmp-app-a');
+      var appA = document.createElement('fmp-app-a-wrapper');
       appA.store = this.store;
   
-      var appB = document.createElement('fmp-app-b');
+      var appB = document.createElement('fmp-app-b-wrapper');
       appB.store = this.store;
   
       wrapper.appendChild(appA);
