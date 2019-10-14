@@ -9,23 +9,10 @@ if (!customElements.get("fmp-app-a-wrapper")) {
       const host = "http://localhost:5001";
 
       var shadow = this.attachShadow({ mode: "open" });
-      // var iframe = document.createElement("iframe");
-      // iframe.src = `${host}/index.html`;
+      var iframe = document.createElement("iframe");
+      iframe.src = `${host}/index.html`;
+
       var wrapper = document.createElement("div");
-
-      /*
-<script src="runtime-es2015.js" type="module"></script>
-<script src="polyfills-es2015.js" type="module"></script>
-<script src="runtime-es5.js" nomodule defer></script>
-<script src="polyfills-es5.js" nomodule defer></script>
-<script src="styles-es2015.js" type="module"></script>
-<script src="styles-es5.js" nomodule defer></script>
-<script src="vendor-es2015.js" type="module"></script>
-<script src="main-es2015.js" type="module"></script>
-<script src="vendor-es5.js" nomodule defer></script>
-<script src="main-es5.js" nomodule defer></script>
-
-*/
 
       const chunks = [
         { src: "runtime-es2015.js", type: "module" },
@@ -40,7 +27,6 @@ if (!customElements.get("fmp-app-a-wrapper")) {
         { src: "main-es5.js", nomodule: true, defer: true }
       ];
 
-
       for (const { src, type, nomodule, defer } of chunks) {
         const script = document.createElement("script");
         script.src = `${host}/${src}`;
@@ -48,39 +34,15 @@ if (!customElements.get("fmp-app-a-wrapper")) {
         script.nomodule = nomodule;
         script.defer = defer;
 
-        wrapper.appendChild(script);
+        // wrapper.appendChild(script);
       }
 
-      /*
-<script src="runtime-es2015.js" type="module"></script>
-<script src="polyfills-es2015.js" type="module"></script>
-<script src="runtime-es5.js" nomodule defer></script>
-<script src="polyfills-es5.js" nomodule defer></script>
-<script src="styles-es2015.js" type="module"></script>
-<script src="styles-es5.js" nomodule defer></script>
-<script src="vendor-es2015.js" type="module"></script>
-<script src="main-es2015.js" type="module"></script>
-<script src="vendor-es5.js" nomodule defer></script>
-<script src="main-es5.js" nomodule defer></script>
+      // var app = document.createElement("fmp-app-a");
 
+      // wrapper.appendChild(app);
+      // shadow.appendChild(wrapper);
 
-
-      <script src="runtime-es2015.js" type="module"></script>
-      <script src="polyfills-es2015.js" type="module"></script>
-      <script src="runtime-es5.js" nomodule defer></script>
-      <script src="polyfills-es5.js" nomodule defer></script>
-      <script src="styles-es2015.js" type="module"></script>
-      <script src="styles-es5.js" nomodule defer></script>
-      <script src="vendor-es2015.js" type="module">
-      </script><script src="main-es2015.js" type="module"></script>
-      <script src="vendor-es5.js" nomodule defer></script>
-      <script src="main-es5.js" nomodule defer></script>
-      */
-
-      var app = document.createElement("fmp-app-a");
-
-      wrapper.appendChild(app);
-      shadow.appendChild(wrapper);
+      shadow.appendChild(iframe);
     }
   }
 
