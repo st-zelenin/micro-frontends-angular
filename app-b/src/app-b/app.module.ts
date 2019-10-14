@@ -20,18 +20,10 @@ import { AppComponent } from './app.component';
   ]
 })
 export class AppModule {
-  constructor(private injector: Injector) {}
-
-  ngDoBootstrap(): void {
-
-    const { injector } = this;
-
-    // create custom elements from angular components
+  constructor(injector: Injector) {
     const ngCustomElement = createCustomElement(AppComponent, { injector });
-
-    // define in browser registry
-    customElements.define('fmp-app-b', ngCustomElement);
-
-    // import('../../../wrapper.js');
+    customElements.define("fmp-app-b", ngCustomElement);
   }
+
+  ngDoBootstrap(): void {}
  }
