@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  publicPath: 'http://localhost:5002/'
 };

@@ -5,7 +5,7 @@
     "types": []
   },
   "files": [
-    "src/main-a.ts",
+    "src/main.ts",
     "src/polyfills.ts"
   ],
   "include": [
