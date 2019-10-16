@@ -1,21 +1,25 @@
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EmptyComponent } from './empty/empty.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, EmptyComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [],
   entryComponents: [AppComponent]
 })
 export class AppModule {
-  constructor(injector: Injector) {
+  constructor(injector: Injector, router: Router) {
     const ngCustomElement = createCustomElement(AppComponent, { injector });
     customElements.define('fmp-app-a', ngCustomElement);
+
+    console.log('router A', router);
   }
 
   ngDoBootstrap(): void {}

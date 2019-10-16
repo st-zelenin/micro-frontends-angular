@@ -3,7 +3,12 @@ const CustomModuleIdsPlugin = require('custom-module-ids-webpack-plugin');
 
 module.exports = {
   output: {
-    chunkFilename: 'app-a-[id].js',
+    chunkFilename: 'app-a-[id].js'
+  },
+  optimization: {
+    concatenateModules: false,
+    providedExports: false,
+    usedExports: false
   },
   plugins: [
     new CustomModuleIdsPlugin({

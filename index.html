@@ -9,14 +9,30 @@
   </head>
   <body>
     <button id="title-change">change title</button>
-    
+    <button id="home">home</button>
+
     <fmp-apps-wrapper></fmp-apps-wrapper>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.9.1/zone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.2.10/custom-elements-es5-adapter.js"></script>
-    
+
     <script src="http://localhost:5001/main.js"></script>
     <script src="http://localhost:5002/main.js"></script>
     <script src="wrapper.js"></script>
+
+    <script>
+      window.onpopstate = function(event) {
+        console.log(
+          'location: ' +
+            document.location +
+            ', state: ' +
+            JSON.stringify(event.state)
+        );
+      };
+
+      window.onhashchange = function() {
+        console.log('sfdds');
+      };
+    </script>
   </body>
 </html>

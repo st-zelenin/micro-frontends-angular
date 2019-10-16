@@ -5,6 +5,11 @@ module.exports = {
   output: {
     chunkFilename: 'app-b-[id].js'
   },
+  optimization: {
+    concatenateModules: false,
+    providedExports: false,
+    usedExports: false
+  },
   plugins: [
     new CustomModuleIdsPlugin({
       idFunction: function(libIdent, module) {
