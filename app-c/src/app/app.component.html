@@ -1,0 +1,15 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <a routerLink="/">home</a>
+</div>
+
+<div id="app-a-container"></div>
+<fmp-app-a [router]="router"></fmp-app-a>
+<fmp-app-b [router]="router"></fmp-app-b>
+
+<router-outlet></router-outlet>
+
+<!-- <script src="http://localhost:5001/main.js"></script> -->
+<!-- <script src="http://localhost:5002/main.js"></script> -->

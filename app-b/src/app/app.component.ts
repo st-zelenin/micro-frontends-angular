@@ -14,12 +14,12 @@ export class AppComponent implements OnInit {
     this.router.navigate([value]);
   }
 
+  constructor(private router: Router) {}
+
   @Output('routechanged') routeChanged = new EventEmitter<{
     event: any;
     skip: boolean;
   }>();
-
-  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.router.events

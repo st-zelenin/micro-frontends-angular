@@ -8,23 +8,19 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @Input() store: any;
   @Input() set location(value) {
     console.log('location A', value);
     this.router.navigate([value]);
   }
 
+  constructor(private router: Router) {}
+
+  @Input() store: any;
+
   @Output('routechanged') routeChanged = new EventEmitter<{
     event: any;
     skip: boolean;
   }>();
-
-  constructor(private router: Router) {}
-
-  hashHandler() {
-    console.log('The hash has changed! A');
-    console.log(window.location);
-  }
 
   ngOnInit(): void {
     this.router.events
