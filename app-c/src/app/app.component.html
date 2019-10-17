@@ -2,12 +2,12 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <a routerLink="/">home</a>
+  <a (click)="goHome()">home</a>
 </div>
 
 <div id="app-a-container"></div>
-<fmp-app-a [router]="router"></fmp-app-a>
-<fmp-app-b [router]="router"></fmp-app-b>
+<!-- <fmp-app-a [router]="router"></fmp-app-a> -->
+<!-- <fmp-app-b [router]="router"></fmp-app-b> -->
 
 <router-outlet></router-outlet>
 

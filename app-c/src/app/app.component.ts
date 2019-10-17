@@ -18,15 +18,32 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const script: HTMLScriptElement = this.renderer.createElement('script');
-    this.renderer.appendChild(this.document.body, script);
+    const scriptA: HTMLScriptElement = this.renderer.createElement('script');
+    this.renderer.appendChild(this.document.body, scriptA);
     // script.defer = true;
-    script.onload = xxx => {
+    scriptA.onload = xxx => {
       const container = this.document.getElementById('app-a-container');
       // const AppA = customElements.get('fmp-app-a');
       container.appendChild(this.renderer.createElement('fmp-app-a'));
       // container.appendChild(new AppA());
     };
-    script.src = 'http://localhost:5001/app-a.js';
+    scriptA.src = 'http://localhost:5001/app-a.js';
+
+    const scriptB: HTMLScriptElement = this.renderer.createElement('script');
+    this.renderer.appendChild(this.document.body, scriptB);
+    // script.defer = true;
+    scriptB.onload = xxx => {
+      const container = this.document.getElementById('app-a-container');
+      // const AppA = customElements.get('fmp-app-a');
+      container.appendChild(this.renderer.createElement('fmp-app-b'));
+      // container.appendChild(new AppA());
+    };
+    scriptB.src = 'http://localhost:5002/app-b.js';
+
+
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
   }
 }

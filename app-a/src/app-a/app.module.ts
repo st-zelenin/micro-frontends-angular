@@ -10,7 +10,7 @@ import { EmptyComponent } from './empty/empty.component';
 @NgModule({
   declarations: [AppComponent, EmptyComponent],
   imports: [BrowserModule, AppRoutingModule],
-  bootstrap: [AppComponent]
+  entryComponents: [AppComponent]
 })
 export class AppModule {
   constructor(private injector: Injector) {}
@@ -22,7 +22,7 @@ export class AppModule {
 
     customElements.define('fmp-app-a', ngCustomElement);
 
-    // TODO: remove?
-    app.bootstrap(AppComponent);
+    // // TODO: remove?
+    // app.bootstrap(AppComponent);
   }
 }

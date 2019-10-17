@@ -2,14 +2,19 @@
 // const CustomModuleIdsPlugin = require('custom-module-ids-webpack-plugin');
 
 module.exports = {
+  entry: {
+    'app-b': './src/main-b.ts'
+  },
   output: {
+    jsonpFunction: 'webpackJsonp-app-b',
+    library: 'appB',
     chunkFilename: 'app-b-[id].js',
-    libraryTarget: 'umd'
+    // libraryTarget: 'umd'
   },
   optimization: {
-    concatenateModules: false,
-    providedExports: false,
-    usedExports: false
+    // concatenateModules: false,
+    // providedExports: false,
+    // usedExports: false
   },
   // plugins: [
   //   new CustomModuleIdsPlugin({
@@ -25,6 +30,7 @@ module.exports = {
   // ],
 
   externals: {
+    'zone.js/dist/zone': 'Zone',
     rxjs: 'rxjs',
     '@angular/common': 'ng.common',
     '@angular/core': 'ng.core',
