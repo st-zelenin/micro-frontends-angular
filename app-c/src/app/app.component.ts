@@ -27,6 +27,6 @@ export class AppComponent implements OnInit {
       container.appendChild(this.renderer.createElement('fmp-app-a'));
       // container.appendChild(new AppA());
     };
-    script.src = 'http://localhost:5001/main.js';
+    script.src = 'http://localhost:5001/app-a.js';
   }
 }

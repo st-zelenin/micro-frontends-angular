@@ -3,6 +3,7 @@
 
 module.exports = {
   externals: {
+    'zone.js/dist/zone': 'Zone',
     rxjs: 'rxjs',
     '@angular/common': 'ng.common',
     '@angular/core': 'ng.core',

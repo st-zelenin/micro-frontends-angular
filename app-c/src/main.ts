@@ -1,4 +1,4 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, ɵALLOW_MULTIPLE_PLATFORMS } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
@@ -8,5 +8,10 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+(window as any).platform = platformBrowserDynamic([
+  { provide: ɵALLOW_MULTIPLE_PLATFORMS, useValue: true }
+]);
+
+(window as any).platform
+  .bootstrapModule(AppModule)
   .catch(err => console.error(err));
