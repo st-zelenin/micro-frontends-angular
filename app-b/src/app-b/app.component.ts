@@ -1,5 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -8,24 +9,29 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @Input() store: any;
-  @Input() set location(value) {
-    console.log('location B', value);
-    this.router.navigate([value]);
+  @Input() set externalRoute(value) {
+    console.log('b externalRoute', value);
+    if (this.router.url !== value) {
+      this.router.navigate([value]);
+    }
   }
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, location: Location) {
+    location.onUrlChange((url, state) => {
+      console.log('url', url, 'state', state);
+    });
+  }
 
-  @Output('routechanged') routeChanged = new EventEmitter<{
-    event: any;
-    skip: boolean;
-  }>();
+  @Input() store: any;
+
+  // tslint:disable-next-line: no-output-rename
+  @Output('routechanged') routeChanged = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.router.events
-      .pipe(filter(e => e instanceof NavigationStart))
-      .subscribe(event => {
-        this.routeChanged.emit({ event, skip: true });
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(({ url }: NavigationEnd) => {
+        this.routeChanged.emit(url);
       });
   }
 }
