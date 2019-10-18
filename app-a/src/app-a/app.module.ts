@@ -1,7 +1,6 @@
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,14 +14,11 @@ import { EmptyComponent } from './empty/empty.component';
 export class AppModule {
   constructor(private injector: Injector) {}
 
-  ngDoBootstrap(app): void {
+  ngDoBootstrap(): void {
     const ngCustomElement = createCustomElement(AppComponent, {
       injector: this.injector
     });
 
     customElements.define('fmp-app-a', ngCustomElement);
-
-    // // TODO: remove?
-    // app.bootstrap(AppComponent);
   }
 }

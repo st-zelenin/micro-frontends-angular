@@ -1,12 +1,13 @@
 import { DOCUMENT, Location } from '@angular/common';
 import {
   Component,
+  EventEmitter,
   Inject,
   OnInit,
-  Renderer2,
-  EventEmitter
+  Renderer2
 } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -14,15 +15,16 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'app-c';
-  routerModule = RouterModule;
-
   private appA: AppElement;
   private appB: AppElement;
 
   private store = {
     title: 'hello'
   };
+
+  private get appsContainer() {
+    return this.document.getElementById('apps-container');
+  }
 
   constructor(
     public router: Router,
@@ -40,7 +42,6 @@ export class AppComponent implements OnInit {
     this.renderer.appendChild(this.document.body, scriptA);
 
     scriptA.onload = () => {
-      const container = this.document.getElementById('app-a-container');
       const element: AppElement = this.renderer.createElement('fmp-app-a');
       element.store = this.store;
       element.addEventListener(
@@ -49,12 +50,10 @@ export class AppComponent implements OnInit {
           console.log('from a to parent', url);
           this.router.navigate([url]);
 
-          if (this.appB) {
-            this.appB.externalRoute = url;
-          }
+          this.updateAppBExternalRoute(url);
         }
       );
-      container.appendChild(element);
+      this.appsContainer.appendChild(element);
 
       this.appA = element;
     };
@@ -65,7 +64,6 @@ export class AppComponent implements OnInit {
     this.renderer.appendChild(this.document.body, scriptB);
 
     scriptB.onload = () => {
-      const container = this.document.getElementById('app-a-container');
       const element: AppElement = this.renderer.createElement('fmp-app-b');
       element.store = this.store;
       element.addEventListener(
@@ -74,23 +72,35 @@ export class AppComponent implements OnInit {
           console.log('from b to parent', url);
           this.router.navigate([url]);
 
-          if (this.appA) {
-            this.appA.externalRoute = url;
-          }
+          this.updateAppAExternalRoute(url);
         }
       );
 
-      container.appendChild(element);
+      this.appsContainer.appendChild(element);
 
       this.appB = element;
     };
 
     scriptB.src = 'http://localhost:5002/app-b.js';
+
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(({ url }: NavigationEnd) => {
+        this.updateAppAExternalRoute(url);
+        this.updateAppBExternalRoute(url);
+      });
   }
 
-  goHome() {
-    this.router.navigate(['/']);
-    this.appA.externalRoute = this.appB.externalRoute = '/';
+  private updateAppBExternalRoute(url) {
+    if (this.appB) {
+      this.appB.externalRoute = url;
+    }
+  }
+
+  private updateAppAExternalRoute(url) {
+    if (this.appA) {
+      this.appA.externalRoute = url;
+    }
   }
 }
 

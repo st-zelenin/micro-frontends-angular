@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { Router } from '@angular/router';
 import { EmptyComponent } from './empty/empty.component';
 
 @NgModule({
@@ -15,12 +14,13 @@ import { EmptyComponent } from './empty/empty.component';
   entryComponents: [AppComponent]
 })
 export class AppModule {
-  constructor(injector: Injector, router: Router) {
-    const ngCustomElement = createCustomElement(AppComponent, { injector });
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap(): void {
+    const ngCustomElement = createCustomElement(AppComponent, {
+      injector: this.injector
+    });
+
     customElements.define('fmp-app-b', ngCustomElement);
-
-    console.log('router B', router);
   }
-
-  ngDoBootstrap(): void {}
 }

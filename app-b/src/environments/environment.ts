@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  publicPath: 'http://localhost:5002/',
+  publicPath: '/',
 };
 
 /*

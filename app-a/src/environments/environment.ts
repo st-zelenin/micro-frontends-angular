@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  publicPath: 'http://localhost:5001/',
-  standAlone: false,
+  publicPath: '/',
+  standAlone: true,
 };
 
 /*
