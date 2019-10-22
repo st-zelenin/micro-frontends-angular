@@ -1,5 +1,12 @@
 import { DOCUMENT, Location } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnInit, Renderer2 } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Renderer2
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -9,7 +16,9 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  // tslint:disable-next-line: no-input-rename
   @Input('app-a') isAppA: string;
+  // tslint:disable-next-line: no-input-rename
   @Input('app-b') isAppB: string;
 
   private appA: AppElement;
@@ -78,7 +87,14 @@ export class AppComponent implements OnInit {
 
   private createAppA = () => {
     const element: AppElement = this.renderer.createElement('fmp-app-a');
-    element.store = this.store;
+    element.addEventListener(
+      'appinitialized',
+      () => {
+        element.store = this.store;
+      },
+      { once: true }
+    );
+
     element.addEventListener('routechanged', ({ detail: url }: CustomEvent) => {
       console.log('from a to parent', url);
       this.router.navigate([url]);
@@ -92,7 +108,14 @@ export class AppComponent implements OnInit {
 
   private createAppB = () => {
     const element: AppElement = this.renderer.createElement('fmp-app-b');
-    element.store = this.store;
+    element.addEventListener(
+      'appinitialized',
+      () => {
+        element.store = this.store;
+      },
+      { once: true }
+    );
+
     element.addEventListener('routechanged', ({ detail: url }: CustomEvent) => {
       console.log('from b to parent', url);
       this.router.navigate([url]);

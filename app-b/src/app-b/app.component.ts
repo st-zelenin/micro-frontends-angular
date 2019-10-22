@@ -1,5 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  DoCheck
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -8,7 +15,9 @@ import { filter } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
+  @Input() store: any;
+
   @Input() set externalRoute(value) {
     console.log('b externalRoute', value);
     if (this.router.url !== value) {
@@ -16,16 +25,16 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // tslint:disable-next-line: no-output-rename
+  @Output('routechanged') routeChanged = new EventEmitter<string>();
+  // tslint:disable-next-line: no-output-rename
+  @Output('appinitialized') appInitialized = new EventEmitter();
+
   constructor(private router: Router, location: Location) {
     location.onUrlChange((url, state) => {
       console.log('url', url, 'state', state);
     });
   }
-
-  @Input() store: any;
-
-  // tslint:disable-next-line: no-output-rename
-  @Output('routechanged') routeChanged = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.router.events
@@ -33,5 +42,13 @@ export class AppComponent implements OnInit {
       .subscribe(({ url }: NavigationEnd) => {
         this.routeChanged.emit(url);
       });
+  }
+
+  ngDoCheck() {
+    // possible issue: I do not know,
+    // but the host app received this event only upon second ngDoCheck here.
+    // I have to notify the host app in order to obtain initial store.
+    // the event is being subscribed in the host app with { once: true }
+    this.appInitialized.emit();
   }
 }
