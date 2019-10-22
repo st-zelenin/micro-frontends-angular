@@ -40,46 +40,13 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const scriptA: HTMLScriptElement = this.renderer.createElement('script');
     this.renderer.appendChild(this.document.body, scriptA);
-
-    scriptA.onload = () => {
-      const element: AppElement = this.renderer.createElement('fmp-app-a');
-      element.store = this.store;
-      element.addEventListener(
-        'routechanged',
-        ({ detail: url }: CustomEvent) => {
-          console.log('from a to parent', url);
-          this.router.navigate([url]);
-
-          this.updateAppBExternalRoute(url);
-        }
-      );
-      this.appsContainer.appendChild(element);
-
-      this.appA = element;
-    };
-
+    scriptA.onload = this.creatAppA;
     scriptA.src = 'http://localhost:5001/app-a.js';
 
     const scriptB: HTMLScriptElement = this.renderer.createElement('script');
     this.renderer.appendChild(this.document.body, scriptB);
 
-    scriptB.onload = () => {
-      const element: AppElement = this.renderer.createElement('fmp-app-b');
-      element.store = this.store;
-      element.addEventListener(
-        'routechanged',
-        ({ detail: url }: CustomEvent) => {
-          console.log('from b to parent', url);
-          this.router.navigate([url]);
-
-          this.updateAppAExternalRoute(url);
-        }
-      );
-
-      this.appsContainer.appendChild(element);
-
-      this.appB = element;
-    };
+    scriptB.onload = this.creatAppB;
 
     scriptB.src = 'http://localhost:5002/app-b.js';
 
@@ -89,6 +56,38 @@ export class AppComponent implements OnInit {
         this.updateAppAExternalRoute(url);
         this.updateAppBExternalRoute(url);
       });
+
+    this.creatAppA();
+    this.creatAppB();
+  }
+
+  private creatAppA = () => {
+    const element: AppElement = this.renderer.createElement('fmp-app-a');
+    element.store = this.store;
+    element.addEventListener('routechanged', ({ detail: url }: CustomEvent) => {
+      console.log('from a to parent', url);
+      this.router.navigate([url]);
+
+      this.updateAppBExternalRoute(url);
+    });
+    this.appsContainer.appendChild(element);
+
+    this.appA = element;
+  }
+
+  private creatAppB = () => {
+    const element: AppElement = this.renderer.createElement('fmp-app-b');
+    element.store = this.store;
+    element.addEventListener('routechanged', ({ detail: url }: CustomEvent) => {
+      console.log('from b to parent', url);
+      this.router.navigate([url]);
+
+      this.updateAppAExternalRoute(url);
+    });
+
+    this.appsContainer.appendChild(element);
+
+    this.appB = element;
   }
 
   private updateAppBExternalRoute(url) {
