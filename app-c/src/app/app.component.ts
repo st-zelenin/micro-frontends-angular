@@ -1,12 +1,6 @@
 import { DOCUMENT, Location } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  OnInit,
-  Renderer2
-} from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, EventEmitter, Inject, Input, OnInit, Renderer2 } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -15,6 +9,9 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  @Input('app-a') isAppA: string;
+  @Input('app-b') isAppB: string;
+
   private appA: AppElement;
   private appB: AppElement;
 
@@ -35,20 +32,12 @@ export class AppComponent implements OnInit {
     location.onUrlChange((url, state) => {
       console.log('url', url, 'state', state);
     });
+
+    console.log('app-c', this);
   }
 
   ngOnInit(): void {
-    const scriptA: HTMLScriptElement = this.renderer.createElement('script');
-    this.renderer.appendChild(this.document.body, scriptA);
-    scriptA.onload = this.creatAppA;
-    scriptA.src = 'http://localhost:5001/app-a.js';
-
-    const scriptB: HTMLScriptElement = this.renderer.createElement('script');
-    this.renderer.appendChild(this.document.body, scriptB);
-
-    scriptB.onload = this.creatAppB;
-
-    scriptB.src = 'http://localhost:5002/app-b.js';
+    this.addApps();
 
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
@@ -56,12 +45,38 @@ export class AppComponent implements OnInit {
         this.updateAppAExternalRoute(url);
         this.updateAppBExternalRoute(url);
       });
-
-    this.creatAppA();
-    this.creatAppB();
   }
 
-  private creatAppA = () => {
+  private addApps() {
+    if (this.isAppA === '') {
+      this.createAppA();
+      return;
+    }
+
+    if (this.isAppB === '') {
+      this.createAppB();
+      return;
+    }
+
+    this.loadAppA();
+    this.loadAppB();
+  }
+
+  private loadAppA() {
+    const script: HTMLScriptElement = this.renderer.createElement('script');
+    this.renderer.appendChild(this.document.body, script);
+    script.onload = this.createAppA;
+    script.src = 'http://localhost:5001/app-a.js';
+  }
+
+  private loadAppB() {
+    const script: HTMLScriptElement = this.renderer.createElement('script');
+    this.renderer.appendChild(this.document.body, script);
+    script.onload = this.createAppB;
+    script.src = 'http://localhost:5002/app-b.js';
+  }
+
+  private createAppA = () => {
     const element: AppElement = this.renderer.createElement('fmp-app-a');
     element.store = this.store;
     element.addEventListener('routechanged', ({ detail: url }: CustomEvent) => {
@@ -75,7 +90,7 @@ export class AppComponent implements OnInit {
     this.appA = element;
   }
 
-  private creatAppB = () => {
+  private createAppB = () => {
     const element: AppElement = this.renderer.createElement('fmp-app-b');
     element.store = this.store;
     element.addEventListener('routechanged', ({ detail: url }: CustomEvent) => {
